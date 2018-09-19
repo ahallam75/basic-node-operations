@@ -18,10 +18,11 @@ const fs = require("fs");
       break;
     case "head":
       commandLibrary.head(userInputArray.slice(1));
+      break;
     case "tail":
       commandLibrary.tail(userInputArray.slice(1));
-    default:
-      done('File does not exist');
+      break;
+    default: console.log("Command not found");
   }
  }
 
@@ -39,19 +40,19 @@ const fs = require("fs");
      });
    },  
 
-   "head": function(fullPath) {
-    const fileName = fullPath[0];
-    fs.readFile(fileName, (err, data) => {
-        if (err) throw err;
-        const docArr = data.toString().split('\n');
-        let tempArr = [];
-        const n = 10;
-        for (var i = 0; i < n; i++) {
-          docArr[i] = docArr[i].replace(',', (i + 1)) + '\n';
-          tempArr.push(docArr[i]);
-        }
-        done(tempArr);
-    });
+   "head": function(fullPath) { 
+    const fileName = fullPath[0]; 
+    fs.readFile(fileName, (err, data) => { 
+        if (err) throw err; 
+        const docArr = data.toString().split('\n'); 
+        let tempArr = []; 
+        const n = docArr.length; 
+        for (var i = 0; i < n; i++) { 
+            docArr[i] = docArr[i].replace(',', (i + 1)) + '\n'; 
+            tempArr.push(docArr[i]); 
+        } 
+        done(tempArr.join('')); 
+    }); 
   },
 
   "tail": function(fullPath) {
@@ -60,13 +61,12 @@ const fs = require("fs");
         if (err) throw err;
         const docArr = data.toString().split('\n');
         let tempArr = [];
-        const s = docArr.length - 6;
-        const n = docArr.length - 1;
-        for (var i = s; i < n; i++) {
+        const n = docArr.length;
+        for (var i = docArr.length - 1; i >= 0; i--) {
         docArr[i] = docArr[i].replace(',', i + 1) + '\n';
         tempArr.push(docArr[i]);
       }
-      done(tempArr);
+        done(tempArr.join(''));
     });
   }
 
